@@ -1,27 +1,27 @@
 import pytest
-from app.app import add, subtract, multiply, divide
+from app.app import divide
 
 
-def test_add():
+@pytest.mark.parametrize("a,b,expected", [(2,3,5),(-1,1,0),(0,0,0)])
+def test_add(a,b,expected):
     """Тестирует функцию сложения."""
-    assert add(2, 3) == 5
-    assert add(-1, 1) == 0
-    assert add(0, 0) == 0
+    assert a + b == expected
 
-def test_subtract():
+@pytest.mark.parametrize("a,b,expected", [(10,5,5), (6,3,3), (5,5,0)])
+def test_subtract(a,b,expected):
     """Тестирует функцию вычитания"""
-    assert subtract(10, 5) == 5
-    assert subtract(6,3) == 3
+    assert a - b == expected
 
-def test_multiply():
+@pytest.mark.parametrize("a,b,expected", [(5,2,10), (10,10,100), (5,5,25)])
+def test_multiply(a,b,expected):
     """Тестирует функцию умножения"""
-    assert multiply(5,5) == 25
-    assert multiply(10,10) == 100
+    assert a * b == expected
 
-
-def test_divide():
+@pytest.mark.parametrize("a,b,expected", [(100,10,10), (10,2,5), (5,0,ValueError)])
+def test_divide(a,b,expected):
     """Тестирует функцию деления."""
-    assert divide(10, 2) == 5
-    assert divide(9, 3) == 3
-    with pytest.raises(ValueError):
-        divide(5, 0)
+    if b == 0:
+        with pytest.raises(ValueError):
+            divide(a,b)
+    else:
+        assert a / b == expected
